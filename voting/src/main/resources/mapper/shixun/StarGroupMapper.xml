@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cqyc.shixun.mapper.StarGroupMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.cqyc.shixun.domain.StarGroup">
+        <id column="star_id" property="starId" />
+        <result column="star_group" property="starGroup" />
+        <result column="description" property="description" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        star_id, star_group, description
+    </sql>
+
+    <resultMap id="GroupVo" type="com.cqyc.shixun.domain.vo.StarGroupVo">
+        <id property="starId" column="star_id"></id>
+        <result property="starGroup" column="star_group"></result>
+        <result property="description" column="description"></result>
+        <association property="superstar" javaType="com.cqyc.shixun.domain.Superstar">
+            <id property="id" column="id"></id>
+            <result property="starImg" column="star_img"></result>
+            <result property="starName" column="star_name"></result>
+        </association>
+    </resultMap>
+
+    <!--连表查询选手信息以及-->
+    <select id="selectStarGroup" resultMap="GroupVo">
+        SELECT * FROM star_group s ,superstar p WHERE s.star_id=p.id
+        <if test="myPage.selectStr!=null and myPage.selectStr != ''">
+            AND star_group=#{myPage.selectStr}
+        </if>
+    </select>
+
+    <!--分组查询-->
+    <select id="selGroup" resultType="com.cqyc.shixun.domain.StarGroup">
+        SELECT `star_group`,`description`,`group_img` FROM `star_group` GROUP BY `star_group`
+    </select>
+</mapper>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cqyc.shixun.mapper.SysUserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.cqyc.shixun.domain.SysUser">
+        <id column="id" property="id" />
+        <result column="username" property="username" />
+        <result column="login_name" property="loginName" />
+        <result column="passwrod" property="passwrod" />
+        <result column="user_type" property="userType" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, username, login_name, passwrod, user_type
+    </sql>
+
+    <!--根据是否有条件查询所有用户的信息-->
+    <select id="selectAllUsers" resultType="com.cqyc.shixun.domain.SysUser">
+        select * from sys_user
+        <where>
+            del_flag = 0
+            <if test="myPage.selectStr !=null and myPage.selectStr != ''" >
+             and login_name=#{myPage.selectStr}
+            </if>
+        </where>
+    </select>
+
+</mapper>
